@@ -4,23 +4,24 @@ import { MoviesList } from './components/MoviesList';
 import moviesFromServer from './api/movies.json';
 
 function getPreparedMovies(movies, { query }) {
-  let preparedMovies = [...movies];
   const normalizedQuery = query.trim().toLowerCase();
 
   if (normalizedQuery) {
-    preparedMovies = preparedMovies.filter(
+    const preparedMovies = movies.filter(
       movie =>
         movie.title.toLowerCase().includes(normalizedQuery) ||
         movie.description.toLowerCase().includes(normalizedQuery),
     );
+
+    return preparedMovies;
   }
 
-  return preparedMovies;
+  return movies;
 }
 
 export const App = () => {
   const [query, setQuery] = useState('');
-  const visableMovies = getPreparedMovies(moviesFromServer, { query });
+  const visibleMovies = getPreparedMovies(moviesFromServer, { query });
 
   return (
     <div className="page">
@@ -46,7 +47,7 @@ export const App = () => {
           </div>
         </div>
 
-        <MoviesList movies={visableMovies} />
+        <MoviesList movies={visibleMovies} />
       </div>
 
       <div className="sidebar">Sidebar goes here</div>
